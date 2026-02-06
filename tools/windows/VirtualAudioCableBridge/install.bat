@@ -1,9 +1,9 @@
 @echo off
 setlocal EnableExtensions
 
-REM Relaunch to auto-run inside a visible Command Prompt window (auto-closes on success).
+REM Relaunch to auto-run inside a visible, persistent Command Prompt window.
 if /I "%~1" NEQ "__run" (
-  start "VAC Installer" "%ComSpec%" /d /s /c "call \"%~f0\" __run"
+  start "VAC Installer" "%ComSpec%" /d /k call "%~f0" __run
   exit /b 0
 )
 
