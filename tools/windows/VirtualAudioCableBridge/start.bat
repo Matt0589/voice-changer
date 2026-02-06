@@ -11,7 +11,6 @@ set "INSTALL_DIR=%LOCALAPPDATA%\VirtualAudioCableBridge"
 set "MARKER_FILE=%INSTALL_DIR%\installed.flag"
 set "ARGS_FILE=%INSTALL_DIR%\bridge.args.txt"
 set "EXE_PATH=%INSTALL_DIR%\VirtualAudioCableBridge.exe"
-set "DLL_PATH=%INSTALL_DIR%\VirtualAudioCableBridge.dll"
 
 if not exist "%MARKER_FILE%" (
   echo ERROR: VirtualAudioCableBridge is not installed yet.
@@ -47,27 +46,13 @@ if not errorlevel 1 (
   exit /b 1
 )
 
-if exist "%EXE_PATH%" (
-  echo Launching VirtualAudioCableBridge with args from bridge.args.txt...
-  start "VirtualAudioCableBridge" "%EXE_PATH%" %ARGS_LINE%
-  exit /b 0
+if not exist "%EXE_PATH%" (
+  echo ERROR: installed bridge binary not found: "%EXE_PATH%".
+  echo Re-run install.bat with a package that includes the prebuilt executable.
+  pause
+  exit /b 1
 )
 
-if exist "%DLL_PATH%" (
-  where dotnet >nul 2>nul
-  if errorlevel 1 (
-    echo ERROR: dotnet runtime was not found in PATH.
-    echo Install .NET runtime/SDK and try again.
-    pause
-    exit /b 1
-  )
-
-  echo Launching VirtualAudioCableBridge via dotnet with args from bridge.args.txt...
-  start "VirtualAudioCableBridge" dotnet "%DLL_PATH%" %ARGS_LINE%
-  exit /b 0
-)
-
-echo ERROR: installed bridge binary not found in "%INSTALL_DIR%".
-echo Re-run install.bat.
-pause
-exit /b 1
+echo Launching VirtualAudioCableBridge with args from bridge.args.txt...
+start "VirtualAudioCableBridge" "%EXE_PATH%" %ARGS_LINE%
+exit /b 0
