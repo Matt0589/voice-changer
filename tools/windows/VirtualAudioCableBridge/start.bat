@@ -1,6 +1,12 @@
 @echo off
 setlocal EnableExtensions
 
+REM Relaunch to auto-run inside a visible, persistent Command Prompt window.
+if /I "%~1" NEQ "__run" (
+  start "VirtualAudioCableBridge Launcher" cmd /k ""%~f0" __run"
+  exit /b 0
+)
+
 set "INSTALL_DIR=%LOCALAPPDATA%\VirtualAudioCableBridge"
 set "MARKER_FILE=%INSTALL_DIR%\installed.flag"
 set "ARGS_FILE=%INSTALL_DIR%\bridge.args.txt"
