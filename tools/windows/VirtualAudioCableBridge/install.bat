@@ -19,14 +19,25 @@ echo.
 echo ==============================================
 echo   VirtualAudioCableBridge - Installer
 echo ==============================================
-echo This installer will automatically install the required files; no input is needed.
+echo This installer will install the required files after confirmation.
+echo.
+
+echo.
+echo Type "run installer" and press Enter to begin installation.
+set /p "USER_CONFIRM=> "
+if /I not "%USER_CONFIRM%"=="run installer" (
+  echo Installation cancelled.
+  echo You must type exactly: run installer
+  pause
+  exit /b 1
+)
 echo.
 
 echo [1/6] Checking prerequisites...
 where dotnet >nul 2>nul
 if errorlevel 1 (
   echo ERROR: dotnet was not found in PATH.
-  echo Please install .NET 8 SDK first (or use install-dotnet.sh in CI/container).
+  echo Please install .NET 8 SDK first ^(or use install-dotnet.sh in CI/container^).
   pause
   exit /b 1
 )
