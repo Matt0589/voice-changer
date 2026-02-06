@@ -37,7 +37,8 @@ echo [1/6] Checking prerequisites...
 where dotnet >nul 2>nul
 if errorlevel 1 (
   echo ERROR: dotnet was not found in PATH.
-  echo Please install .NET 8 SDK first ^(or use install-dotnet.sh in CI/container^).
+  echo Please install .NET 8 SDK first.
+  echo Run "dotnet-installer.bat" in this folder, then run install.bat again.
   pause
   exit /b 1
 )
