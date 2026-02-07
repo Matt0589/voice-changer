@@ -35,13 +35,45 @@ echo.
 
 echo [1/5] Checking package contents...
 if not exist "%PUBLISH_DIR%\%EXE_NAME%" (
-  echo ERROR: required prebuilt executable was not found:
+  echo WARNING: required prebuilt executable was not found:
   echo   "%PUBLISH_DIR%\%EXE_NAME%"
   echo.
   echo This installer no longer builds with dotnet.
-  echo Provide a release package that already includes "%EXE_NAME%" under "publish".
-  pause
-  exit /b 1
+  echo You can provide a local EXE path or a download URL below.
+  echo Leave blank to cancel.
+  echo.
+  set "EXE_SOURCE="
+  set /p "EXE_SOURCE=EXE path or URL> "
+  if "%EXE_SOURCE%"=="" (
+    echo Installation cancelled.
+    pause
+    exit /b 1
+  )
+
+  echo %EXE_SOURCE% | findstr /I /R "^https\?://" >nul
+  if not errorlevel 1 (
+    echo Downloading "%EXE_NAME%"...
+    if not exist "%PUBLISH_DIR%" mkdir "%PUBLISH_DIR%"
+    powershell -NoProfile -Command "try { Invoke-WebRequest -Uri '%EXE_SOURCE%' -OutFile '%PUBLISH_DIR%\%EXE_NAME%' -UseBasicParsing } catch { exit 1 }"
+    if errorlevel 1 (
+      echo ERROR: failed to download "%EXE_NAME%".
+      pause
+      exit /b 1
+    )
+  ) else (
+    if not exist "%EXE_SOURCE%" (
+      echo ERROR: file not found: "%EXE_SOURCE%"
+      pause
+      exit /b 1
+    )
+    if not exist "%PUBLISH_DIR%" mkdir "%PUBLISH_DIR%"
+    copy /Y "%EXE_SOURCE%" "%PUBLISH_DIR%\%EXE_NAME%" >nul
+    if errorlevel 1 (
+      echo ERROR: failed to copy "%EXE_SOURCE%" to "%PUBLISH_DIR%\%EXE_NAME%".
+      pause
+      exit /b 1
+    )
+  )
 )
 
 echo [2/5] Creating install directory...
