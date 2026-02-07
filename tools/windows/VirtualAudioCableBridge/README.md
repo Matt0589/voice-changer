@@ -1,8 +1,3 @@
-diff --git a/tools/windows/VirtualAudioCableBridge/README.md b/tools/windows/VirtualAudioCableBridge/README.md
-index cb82fa1e3f265bcba818fecfd3e12d45a8a3859d..53538362b04086bbfe0b36c38cdfbb899869777c 100644
---- a/tools/windows/VirtualAudioCableBridge/README.md
-+++ b/tools/windows/VirtualAudioCableBridge/README.md
-@@ -1,108 +1,86 @@
  # VirtualAudioCableBridge (Windows)
  
  This project provides a **user-mode bridge** that routes Windows playback audio into an already-installed virtual cable endpoint so Zoom/Skype/Discord can receive it as a microphone.
